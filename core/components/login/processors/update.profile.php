@@ -34,6 +34,13 @@ if ($profile->save() == false) {
     return $modx->lexicon('login.profile_err_save');
 }
 
+/*if UpdateProfile was called with &syncUsername=`email` (or some other valid field),
+username must be changed when the specified field is changed*/
+if (isset($syncUsername) && in_array($syncUsername, array_keys($_POST))) {
+    $modx->user->set('username', $_POST[$syncUsername];
+    $modx->user->save();
+}
+
 $successMsg = $modx->getOption('successMsg',$scriptProperties,$modx->lexicon('login.profile_updated'));
 $modx->toPlaceholder('error.message',$successMsg);
 
